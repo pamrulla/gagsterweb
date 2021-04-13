@@ -18,7 +18,7 @@ WORKDIR /gagsterweb/app
 
 RUN flutter pub get
 RUN flutter build web --web-renderer canvaskit --release -v
-
+RUN ls -R
 WORKDIR /gagsterweb/dist
 COPY ../app/build/web/* .
 
