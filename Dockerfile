@@ -18,12 +18,11 @@ WORKDIR /gagsterweb/app
 RUN flutter pub get
 RUN flutter build web --web-renderer canvaskit --release
 
-WORKDIR /gagsterweb
-RUN mkdir dist
-RUN cp -R ./build/web/* ./dist
+WORKDIR /gagsterweb/dist
+COPY ../app/build/web/* .
 
-RUN rm -rf ./app
-RUN rm -rf ./../flutter
+# RUN rm -rf ./app
+# RUN rm -rf ./../flutter
 
 
 FROM alpine
