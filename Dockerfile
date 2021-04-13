@@ -9,6 +9,7 @@ ENV PATH="$PATH:$PWD/flutter/bin"
 RUN echo $PATH
 RUN echo $PWD
 RUN flutter config --enable-web
+RUN flutter upgrade
 RUN flutter doctor
 
 RUN git clone https://github.com/pamrulla/gagsterweb.git
@@ -16,7 +17,7 @@ RUN git clone https://github.com/pamrulla/gagsterweb.git
 WORKDIR /gagsterweb/app
 
 RUN flutter pub get
-RUN flutter build web --web-renderer canvaskit --release
+RUN flutter build web --web-renderer canvaskit --release -v
 
 WORKDIR /gagsterweb/dist
 COPY ../app/build/web/* .
