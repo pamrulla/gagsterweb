@@ -21,7 +21,7 @@ RUN flutter build web --web-renderer canvaskit --release -v
 WORKDIR /gagsterweb/dist
 WORKDIR /gagsterweb
 RUN ls -R
-COPY ./app/build/web/ .
+RUN cp -R /gagsterweb/app/build/web/ /gagsterweb/dist/
 
 # RUN rm -rf ./app
 # RUN rm -rf ./../flutter
