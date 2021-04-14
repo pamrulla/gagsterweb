@@ -2,7 +2,7 @@ steps:
 # Build the container image
 - name: 'gcr.io/cloud-builders/docker'
   args: ['build', '-t', 'gcr.io/focused-pipe-309806/gagster-web', '.']
-Push the container image to Container Registry
+# Push the container image to Container Registry
 - name: 'gcr.io/cloud-builders/docker'
   args: ['push', 'gcr.io/focused-pipe-309806/gagster-web']
 # Deploy to appengine
