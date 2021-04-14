@@ -20,7 +20,7 @@ RUN flutter pub get
 RUN flutter build web --web-renderer canvaskit --release -v
 WORKDIR /gagsterweb/dist
 WORKDIR /gagsterweb
-RUN ls -R
+# RUN ls -R
 RUN cp -R /gagsterweb/app/build/web/ /gagsterweb/dist/
 
 # RUN rm -rf ./app
@@ -32,5 +32,6 @@ COPY --from=builder /gagsterweb/dist/ /
 RUN apk update
 RUN apk add --update python3
 EXPOSE 8080
+WORKDIR /web
 # RUN python3 -m http.server 8080
 ENTRYPOINT ["python3", "-m", "http.server", "8080"]
