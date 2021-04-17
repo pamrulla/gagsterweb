@@ -1,0 +1,32 @@
+@import 'config';
+@import 'utilities';
+
+// Navbar
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.8rem 2rem;
+  position: fixed;
+  z-index: 1;
+  width: 100%;
+  top: 0;
+  border-bottom: solid 1px $primary-color;
+  opacity: 0.9;
+
+  ul {
+    display: flex;
+    list-style-type: none;
+    a {
+      color: #fff;
+      padding: 0.55rem 1rem;
+      margin: 0 0.25rem;
+      &:hover {
+        border-radius: 2rem;
+        border-color: #fff;
+        background-color: lighten($color: $dark-color, $amount: 10);
+      }
+    }
+  }
+
+}
