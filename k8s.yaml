@@ -1,0 +1,41 @@
+---
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  name: "gagster"
+  namespace: "default"
+  labels:
+    app: "gagster"
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: "gagster"
+  template:
+    metadata:
+      labels:
+        app: "gagster"
+    spec:
+      containers:
+      - name: "gagster-web-sha256-1"
+        image: "gcr.io/focused-pipe-309806/gagster-web@sha256:5e53da6cabf8bc7b179ece23b103408d5242609edb8c0e609f4294cc10dc6890"
+---
+apiVersion: "autoscaling/v2beta1"
+kind: "HorizontalPodAutoscaler"
+metadata:
+  name: "gagster-hpa-6j53"
+  namespace: "default"
+  labels:
+    app: "gagster"
+spec:
+  scaleTargetRef:
+    kind: "Deployment"
+    name: "gagster"
+    apiVersion: "apps/v1"
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+  - type: "Resource"
+    resource:
+      name: "cpu"
+      targetAverageUtilization: 80

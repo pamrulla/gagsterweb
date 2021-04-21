@@ -4,11 +4,19 @@ steps:
   args: ['build', '-t', 'gcr.io/focused-pipe-309806/gagster-web', '.']
 # Push the container image to Container Registry
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['push', 'gcr.io/focused-pipe-309806/gagster-web']
+  args: ['push', 'gcr.io/focused-pipe-309806/gagster-web:$(COMMIT_SHA)']
+# deploy container image to GKE
+- name: "gcr.io/cloud-builders/gke-deploy"
+  args:
+  - run
+  - --filename=k8s.yaml
+  - --image=gcr.io/focused-pipe-309806/gagster-web:$(COMMIT_SHA)
+  - --location=us-west1-a
+  - --cluster=my-first-cluster-1
 # Deploy to appengine
 # - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   # entrypoint: 'bash'
   # args: ['-c', 'gcloud config set app/cloud_build_timeout 1600 && gcloud app deploy']
 # timeout: '1600s'
 images:
-- gcr.io/focused-pipe-309806/gagster-web
+- gcr.io/focused-pipe-309806/gagster-web:$(COMMIT_SHA)
