@@ -18,7 +18,7 @@ class Navbar extends Component {
 
         return ( <nav className={styles.navbar + ' ' + styles['bg-dark']}>
           {/* <Link href="/">GAGSTER</Link> */}
-          <Link href="/"><a><Image src="/logo.svg" alt="gigster logo" width={80} height={40}/></a></Link>
+          <Link href="/"><a><Image src="/logo.svg" alt="gagster logo" width={80} height={40}/></a></Link>
         <ul>
           {menuItems}
         </ul>
