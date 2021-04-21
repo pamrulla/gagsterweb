@@ -15,6 +15,9 @@
     font-size: 1.5rem;
     margin-bottom: 1rem;
 }
+.small {
+    font-size: 1.0rem;
+}
 
 .x-small {
     font-size: 0.8rem;
@@ -28,10 +31,42 @@
     font-size: 0.4rem;
 }
 
-.text-primary {
-    color: $primary-color
-}
+.text {
+    &-primary {
+    color: $primary-color;
+    }
 
+    &-light {
+        color: $light-color;
+    }
+
+    &-dark {
+        color: $dark-color;
+    }
+
+    &-success {
+        color: $success-color;
+    }
+
+    &-danger {
+        color: $danger-color;
+    }
+
+    &-white {
+        color: #fff;
+    }
+    &-center {
+        text-align: center;
+    }
+    
+    &-right {
+        text-align: right;
+    }
+
+    &-left {
+        text-align: left;
+    }
+}
 // Backgrounds
 .bg {
     &-primary {
@@ -64,4 +99,39 @@
     top: 0;
     left: 0;
     background-color: rgba(0, 0, 0, 0.7);
+}
+
+// Common
+.container {
+    width: 80%;
+    margin: 8rem auto 3rem auto;
+}
+
+// buttons
+.btn {
+    padding: 0.4rem;
+    margin: 0.1rem;
+    border-radius: 0.4rem;
+    text-align: center;
+    cursor: pointer;
+
+    &-primary {
+        @include set-background($primary-color);
+    }
+
+    &-light {
+        @include set-background($light-color);
+    }
+    &-dark {
+        @include set-background($dark-color);
+    }
+    &-success {
+        @include set-background($success-color);
+    }
+    &-danger {
+        @include set-background($danger-color);
+    }
+    &-white {
+        @include set-background(#fff);
+    }
 }

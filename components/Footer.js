@@ -27,10 +27,10 @@ class Footer extends Component {
                     <div className={styles['social-icons']}>
                         <div className={styles['social-icons-inner']}>
                             <a href="#fb"><i className={"fab fa-facebook"}></i></a>
-                            <a href="#ln"><i class="fab fa-linkedin"></i></a>
-                            <a href="#tw"><i class="fab fa-twitter"></i></a>
-                            <a href="#in"><i class="fab fa-instagram"></i></a>
-                            <a href="#yt"><i class="fab fa-youtube"></i></a>
+                            <a href="#ln"><i className={"fab fa-linkedin"}></i></a>
+                            <a href="#tw"><i className={"fab fa-twitter"}></i></a>
+                            <a href="#in"><i className={"fab fa-instagram"}></i></a>
+                            <a href="#yt"><i className={"fab fa-youtube"}></i></a>
                         </div>
                     </div>
                 </div>

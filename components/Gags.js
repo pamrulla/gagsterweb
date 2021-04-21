@@ -1,42 +1,32 @@
 import React, { Component } from 'react';
-import Image from 'next/image';
 import styles from '../styles/Gags.module.scss';
 import GagImageCard from './GagImageCard';
 
 class Gags extends Component {
     state = {  }
     render() { 
+        let len = this.props.gags.length
+        const columns = 4
+        let cardsPerColumn = Math.floor(len / columns)
+        let list = []
+        let cardList = []
+        let columnCounter = 1
+        this.props.gags.map((gag, i) => {
+                cardList.push(<GagImageCard key={"imgcard-" + i} gag={gag}></GagImageCard>)
+                if(cardList.length === cardsPerColumn) {
+                    list.push(<div key={"cardscolumn-" + columnCounter} className={styles["gags-column"]}>{cardList}</div>)
+                    cardList = []
+                    columnCounter++
+                }
+            }
+        )
+        if(cardList.length != 0) {
+            list.push(<div key={"cardscolumn-" + columnCounter} className={styles["gags-column"]}>{cardList}</div>)
+        }
         return ( 
             <section className={styles.gags}>
                 <div className={styles["gags-row"]}>
-                    <div className={styles["gags-column"]}>
-                            <GagImageCard src="/sample/1.jpg" hearts="1" author="khan"></GagImageCard>
-                            <GagImageCard src="/sample/2.jpg" hearts="1" author="khan"></GagImageCard>
-                            <GagImageCard src="/sample/3.jpg" hearts="1" author="khan"></GagImageCard>
-                            <GagImageCard src="/sample/4.jpg" hearts="1" author="khan"></GagImageCard>
-                            <GagImageCard src="/sample/5.jpg" hearts="1" author="khan"></GagImageCard>
-                    </div>
-                    <div className={styles["gags-column"]}>
-                            <GagImageCard src="/sample/6.jpg" hearts="1" author="khan"></GagImageCard>
-                            <GagImageCard src="/sample/7.jpg" hearts="1" author="khan"></GagImageCard>
-                            <GagImageCard src="/sample/8.jpg" hearts="1" author="khan"></GagImageCard>
-                            <GagImageCard src="/sample/9.jpg" hearts="1" author="khan"></GagImageCard>
-                            <GagImageCard src="/sample/10.jpg" hearts="1" author="khan"></GagImageCard>
-                    </div>
-                    <div className={styles["gags-column"]}>
-                            <GagImageCard src="/sample/11.jpg" hearts="1" author="khan"></GagImageCard>
-                            <GagImageCard src="/sample/12.jpg" hearts="1" author="khan"></GagImageCard>
-                            <GagImageCard src="/sample/13.jpg" hearts="1" author="khan"></GagImageCard>
-                            <GagImageCard src="/sample/14.jpg" hearts="1" author="khan"></GagImageCard>
-                            <GagImageCard src="/sample/15.jpg" hearts="1" author="khan"></GagImageCard>
-                    </div>
-                    <div className={styles["gags-column"]}>
-                            <GagImageCard src="/sample/16.jpg" hearts="1" author="khan"></GagImageCard>
-                            <GagImageCard src="/sample/17.jpg" hearts="1" author="khan"></GagImageCard>
-                            <GagImageCard src="/sample/18.jpg" hearts="1" author="khan"></GagImageCard>
-                            <GagImageCard src="/sample/19.jpg" hearts="1" author="khan"></GagImageCard>
-                            <GagImageCard src="/sample/20.jpg" hearts="1" author="khan"></GagImageCard>
-                    </div>
+                    {list}
                 </div>
             </section>
          );

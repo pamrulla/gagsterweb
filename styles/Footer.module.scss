@@ -2,7 +2,7 @@
 @import 'utilities';
 
 .footer {
-    border-top: solid lighten($color: $dark-color, $amount: 30);
+    border-top: solid 1px $primary-color;
     background-color: $dark-color;
     padding: 2rem 1rem;
 }

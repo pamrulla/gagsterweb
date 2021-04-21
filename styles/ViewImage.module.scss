@@ -1,0 +1,108 @@
+@import 'config';
+@import 'utilities';
+
+.view {
+    width: 100%;
+    margin: 0.1rem auto;
+    border-radius: 0.4rem;
+    background-color: lighten($color: $dark-color, $amount: 10);    
+
+    @media screen and (max-width: $breakpoint-tablet) {
+        width: 100%;
+      }
+    
+    /* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
+    @media screen and (max-width: $breakpoint-mobile) {
+        width: 100%;
+    }
+
+    &-row {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+
+        @media screen and (max-width: $breakpoint-tablet) {
+            width: 100%;
+            display: block;
+          }
+        
+        /* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
+        @media screen and (max-width: $breakpoint-mobile) {
+            width: 100%;
+            display: block;
+        }
+    }
+
+    &-column {
+        width: 50%;
+        display: flex;
+        flex-direction: column;
+        margin: 0.4rem;
+
+        @media screen and (max-width: $breakpoint-tablet) {
+            width: 100%;
+            min-height: 200px;
+            display: block;
+        }
+        
+        /* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
+        @media screen and (max-width: $breakpoint-mobile) {
+            width: 100%;
+            min-height: 200px;
+            display: block;
+        }
+
+        &-70 {
+            width: 70%;
+            display: flex;
+            flex-direction: column;
+            margin: 0.4rem;
+
+            @media screen and (max-width: $breakpoint-tablet) {
+                width: 100%;
+                min-height: 200px;
+                display: block;
+            }
+            
+            /* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
+            @media screen and (max-width: $breakpoint-mobile) {
+                width: 100%;
+                min-height: 200px;
+                display: block;
+            }
+        }
+
+        &-30 {
+            width: 30%;
+            display: flex;
+            flex-direction: column;
+            margin: 0.4rem;
+
+            @media screen and (max-width: $breakpoint-tablet) {
+                width: 100%;
+                min-height: 200px;
+                display: block;
+            }
+            
+            /* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
+            @media screen and (max-width: $breakpoint-mobile) {
+                width: 100%;
+                min-height: 200px;
+                display: block;
+            }
+        }
+    }
+}
+
+.title {
+    padding: 0.2rem;
+}
+
+.info-panel {
+    height: 100%;
+    width: 100%;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}

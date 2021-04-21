@@ -2,22 +2,44 @@ import React, { Component } from 'react';
 import Image from 'next/image';
 import CircularIcon from "../components/CircularIcon";
 import styles from '../styles/GagImageCard.module.scss';
+import Link from 'next/link';
+import { toBase64 } from 'js-base64';
 
 class GagImageCard extends Component {
     render() {
-        var src = this.props.src
-        var hearts = this.props.hearts
-        var author = this.props.author
+        var gag = this.props.gag
+        var src = "https://res.cloudinary.com/doxkhafkv/image/upload/t_homepage/" + gag.path
+        var hearts = gag.hearts
+        var author = gag.author
+        var view = this.props.view
+        var viewLink = toBase64(JSON.stringify(gag), true)
+
+        var viewtag;
+        if(!view) {
+            viewtag = <div className={styles['gag-image-card-info-view']}>
+                <Link href={{
+                    pathname: "/view",
+                    query: {gag: viewLink},
+                } }>
+                    <a><CircularIcon icon="eye"></CircularIcon></a>
+                </Link>
+                <p className={styles['x-small']}>View</p>
+            </div>
+        }
+        var authortag;
+        if(!view) {
+            authortag =  <div className={styles['gag-image-card-info-author']}>
+                <h1 className={styles['lead']}>{author}</h1>
+                </div>
+        }
+
         return ( 
         <div className={styles['gag-image-card']}>
-            <Image src={src} layout="fill" className={styles['gags-img']}/>
+            <Image src={src} layout="fill" objectFit={'contain'} className={styles['gags-img']}/>
             <div className={styles['gag-image-card-info']}>
-                <div className={styles['gag-image-card-info-view']}>
-                    <a href="#">
-                        <CircularIcon icon="eye"></CircularIcon>
-                    </a>
-                    <p className={styles['x-small']}>View</p>
-                </div>
+                {
+                    viewtag
+                }
                 <div className={styles['gag-image-card-info-interactions']}>
                     <div className={styles['gag-image-card-info-interactions-item']}>
                         <a href="#">
@@ -32,9 +54,7 @@ class GagImageCard extends Component {
                         <p className={styles['xx-small']}>Add to Gallery</p>
                     </div>
                 </div>
-                <div className={styles['gag-image-card-info-author']}>
-                    <h1 className={styles['lead']}>{author}</h1>
-                </div>
+               {authortag}
             </div>
         </div> 
     );
