@@ -2,7 +2,11 @@ import Link from 'next/link';
 import React, { Component } from 'react';
 import { AppContext } from '../context/state';
 import Router from 'next/router'
-import styles from '../styles/Form.module.scss';
+import { Flex } from '@chakra-ui/layout';
+import theme from '../utils/theme';
+import { Input } from '@chakra-ui/input';
+import { Button } from '@chakra-ui/button';
+import { Heading, Text } from '@chakra-ui/layout';
 
 class UploadForm extends Component {
     static contextType = AppContext
@@ -15,7 +19,8 @@ class UploadForm extends Component {
             price: 0.0,
             file: null,
             uploadFailed: false,
-            errorMessage: ''
+            errorMessage: '',
+            isLoading: false
         };
         this.handleTitle = this.handleTitle.bind(this);
         this.handleDescription = this.handleDescription.bind(this);
@@ -23,6 +28,10 @@ class UploadForm extends Component {
         this.handleTags = this.handleTags.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleFile = this.handleFile.bind(this);
+        this.handleisLoading = this.handleisLoading.bind(this);
+    }
+    handleisLoading(value) {
+        this.setState({isLoading: value});
     }
 
     componentDidMount() {
@@ -49,19 +58,6 @@ class UploadForm extends Component {
                 file: result
             });
         })
-        // let reader = new FileReader();
-        // reader.readAsDataURL();
-        // reader.onload = function () {
-        //     this.setState({
-        //         file: reader.result
-        //     });c
-        // };
-        // reader.onerror = function (error) {
-        //     console.log('Error: ', error);
-        // };
-        // this.setState({
-        //     file: URL.createObjectURL(event.target.files[0])
-        // });
     }
     handleTitle(event) {
         this.setState({title: event.target.value});
@@ -84,8 +80,38 @@ class UploadForm extends Component {
         event.preventDefault();
         console.log(this.state.file)
         if(this.state.file === null){
+            this.setState({
+                uploadFailed: true,
+                errorMessage: "Please select image",
+                isLoading: false
+            });
             return
         }
+        if(this.state.title === '') {
+            this.setState({
+                uploadFailed: true,
+                errorMessage: "Title is missing",
+                isLoading: false
+            });
+            return
+        }
+        if(this.state.description === '') {
+            this.setState({
+                uploadFailed: true,
+                errorMessage: "Description is missing",
+                isLoading: false
+            });
+            return
+        }
+        if(this.state.tags === '') {
+            this.setState({
+                uploadFailed: true,
+                errorMessage: "Tags is missing",
+                isLoading: false
+            });
+            return
+        }
+        this.handleisLoading(true);
         // Simple POST request with a JSON body using fetch
         const requestOptions = {
             method: 'post',
@@ -105,9 +131,11 @@ class UploadForm extends Component {
             .then(async response => {
                 if(response.status != 200) {
                     if(response.status == 401) {
+                        this.handleisLoading(false);
                         return Promise.reject("Not authorized")
                     }
                     const data = await response.json();
+                    this.handleisLoading(false);
                     return Promise.reject(data.message);
                 }
                 
@@ -119,7 +147,8 @@ class UploadForm extends Component {
                 console.log(error)
                 this.setState({
                     uploadFailed: true,
-                    errorMessage: error
+                    errorMessage: error,
+                    isLoading: false
                 });
             });
     }
@@ -128,40 +157,58 @@ class UploadForm extends Component {
     render() { 
         let errorLable;
         if(this.state.uploadFailed)
-            errorLable = <label className={styles['form-control'] + ' ' + styles['form-text']+ ' ' + styles['text-danger']+ ' ' + styles['x-small'] + ' ' + styles['text-center']}>{this.state.errorMessage}</label>;
+            errorLable = this.state.errorMessage;
         else
-            errorLable=<></>;
+            errorLable='';
         return ( 
-            <div className={styles.container}>
-                <div className={styles.upload}>
-                    <h1 className={styles.lead + ' ' + styles['text-primary'] + ' ' + styles['text-center']}>Upload A Gag</h1>
-                    {errorLable}
-                    <form onSubmit={this.handleSubmit}>
-                        <div className={styles["upload-row"]}>
-                            <div className={styles["upload-column"]}>
-                                    <input required className={styles['form-control'] + ' ' + styles['form-text']} type="text" value={this.state.title} 
+            <Flex my={10}
+            alignItems="center"
+            justifyContent="center">
+                <Flex direction="column"
+                    bg={theme.primary800}
+                    p={12}
+                    rounded={6}
+                    boxShadow="dark-lg"
+                    color="white">
+                    <Heading as="h1" textAlign="center" mb={6}>Upload A Gag</Heading>
+                    <Flex direction="row" justifyContent="center" color="red" my={4} flexWrap="wrap" display={!this.state.uploadFailed ? "none" : "flex"}>
+                        <Text fontSize="xs" >{errorLable}</Text>
+                    </Flex>
+                        <Flex direction={["column", "column", "row"]}>
+                            <Flex direction="column" m={2} w={["100%", "100%", "50%"]}>
+                                    <Input isRequired variant="filled" mb={3} bg={theme.primary600} type="text" value={this.state.title} 
                                         onChange={this.handleTitle} placeholder="Enter gag title"/>
-                                    <input required className={styles['form-control'] + ' ' + styles['form-text']} type="text" value={this.state.description} 
+                                    <Input isRequired variant="filled" mb={3} bg={theme.primary600} type="text" value={this.state.description} 
                                         onChange={this.handleDescription} placeholder="Enter gag descrption"/>
-                                    <input required className={styles['form-control'] + ' ' + styles['form-text']} type="text" value={this.state.tags} 
+                                    <Input isRequired variant="filled" mb={3} bg={theme.primary600} type="text" value={this.state.tags} 
                                         onChange={this.handleTags} placeholder="Enter tags"/>
-                                    <label className={styles['form-control'] + ' ' + styles['xx-small'] + ' ' + styles['text-light']}>Please enter comma (,) seperated tags</label>
-                                    <input required className={styles['form-control'] + ' ' + styles['form-text']} type="number" value={this.state.price} 
+                                    <Text fontSize="sm">Please enter comma (,) seperated tags</Text>
+                                    <Input isRequired variant="filled" mb={3} bg={theme.primary600} type="number" value={this.state.price} 
                                         onChange={this.handlePrice} placeholder="Enter gag price"/>
-                                    <label className={styles['form-control'] + ' ' + styles['xx-small'] + ' ' + styles['text-light']}>Enter 0 for free gag</label>
-                            </div>
-                            <div className={styles["upload-column"]}>
-                                    <div className={styles["upload-image-button"]}>
-                                        <input type="file" name="file" id="file" className={styles['inputfile']} accept="image/*" onChange={this.handleFile} />
-                                        <label htmlFor="file" className={styles['x-small']}>Click here to select image</label>
-                                        <img src={this.state.file} className={styles["upload-image-button-img"]}/>
+                                    <Text>Enter 0 for free gag</Text>
+                            </Flex>
+                            <Flex direction="column"  w={["100%", "100%", "50%"]} m={2} borderColor={theme.secondary} borderWidth="1px" p={5} borderStyle="dotted" justify="center" align="center">
+                                    <div>
+                                        <Input isRequired type="file" name="file" id="file" accept="image/*" onChange={this.handleFile} display="none" />
+                                        <Text as="label" htmlFor="file">Click here to select image</Text>
+                                        <img src={this.state.file} width="200px"/>
                                     </div>
-                            </div>
-                        </div>
-                        <input className={styles['form-control'] + ' ' + styles['btn'] + ' ' + styles['btn-primary']} type="submit" value="Submit"/>
-                    </form>
-                </div>
-            </div> 
+                            </Flex>
+                        </Flex>
+                        <Button
+                        isLoading = {this.state.isLoading}
+                        loadingText="please wait..." 
+                        size="sm"
+                        rounded="full"
+                        color={theme.button.primary.color}
+                        bg={theme.button.primary.bg}
+                        _hover={{ bg: theme.button.primary._hover.bg}}
+                        onClick={this.handleSubmit}
+                    >
+                        Upload Gag
+                    </Button>
+                </Flex>
+            </Flex> 
         );
     }
 }

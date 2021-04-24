@@ -36,7 +36,7 @@ export default function Home() {
         (
           <Spinner></Spinner>
         ) :
-        (<Gags gags={feed.data.gags}></Gags>)
+        (<Gags gags={feed.data.Gags}></Gags>)
       }
       
     </>

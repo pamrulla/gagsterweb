@@ -10,6 +10,7 @@ export function useFeed () {
 }
 
 export function useSearch (search) {
+    // console.log("userSearch")
     const { data, error } = useSWR(search, fetcher)
     return {
       feed: data,
@@ -28,88 +29,134 @@ export function useAuthor (id) {
 }
 
 async function fetcher(...args) {
+    console.log(args)
     await new Promise(r => setTimeout(r, 2000));
     console.log(args)
     return { 
-        data: {gags: [
-            {
-                path: "samples/landscapes/nature-mountains",
-                hearts: "2",
-                author: "khan1",
-                authorId: 1,
-                id: 1,
-                title: "Title 1",
-                price: 434.00,
-                description: "Description 1",
-                tags: "tags1",
-            },
-            {
-                path: "v1618657140/test/meterbridge_k6aqmd",
-                hearts: "1",
-                author: "khan2",
-                authorId: 1,
-                id: 2,
-                title: "Title 2",
-                price: 434.00,
-                description: "Description 2",
-                tags: "tags",
-            },
-            {
-                path: "sample",
-                hearts: "201",
-                author: "khan3",
-                authorId: 1,
-                id: 3,
-                title: "Title 3",
-                price: 434.00,
-                description: "Description 3",
-                tags: "tags",
-            },
-            {
-                path: "t_homepage/samples/ecommerce/leather-bag-gray",
-                hearts: "2.2m",
-                author: "khan4",
-                authorId: 1,
-                id: 4,
-                title: "Title 1",
-                price: 434.00,
-                description: "Description 1",
-                tags: "tags",
-            },
-            {
-                path: "t_homepage/samples/ecommerce/leather-bag-gray",
-                hearts: "2.2m",
-                author: "khan4",
-                authorId: 1,
-                id: 5,
-                title: "Title 1",
-                price: 434.00,
-                description: "Description 1",
-                tags: "tags",
-            },
-            {
-                path: "t_homepage/samples/ecommerce/leather-bag-gray",
-                hearts: "2.2m",
-                author: "khan4",
-                authorId: 1,
-                id: 6,
-                title: "Title 1",
-                price: 434.00,
-                description: "Description 1",
-                tags: "tags",
-            },
-            {
-                path: "t_homepage/samples/ecommerce/leather-bag-gray",
-                hearts: "2.2m",
-                author: "khan4",
-                authorId: 1,
-                id: 7,
-                title: "Title 1",
-                price: 434.00,
-                description: "Description 1",
-                tags: "tags",
-            },
-        ]}, 
+        data: {
+            Gags: [
+                {
+                    Id: 4,
+                    First_name: "khan",
+                    Last_name: "Patan",
+                    User_id: 3,
+                    Path: "3/hcazfikzmyr2qw3iuawi",
+                    Price: 498,
+                    Title: "asfd",
+                    Description: "asfd",
+                    Hearts: 0,
+                    Width: 344,
+                    Height: 468,
+                    Tags: [
+                        "xx",
+                        "ww"
+                    ]
+                },
+                {
+                    Id: 4,
+                    First_name: "khan",
+                    Last_name: "khan",
+                    User_id: 1,
+                    Path: "1/c2odqadnsy1b36caoz2y",
+                    Price: 100,
+                    Title: "t3",
+                    Description: "t4",
+                    Hearts: 0,
+                    Width: 344,
+                    Height: 468,
+                    Tags: [
+                        "t1",
+                        "t2"
+                    ]
+                },
+                {
+                    Id: 4,
+                    First_name: "khan",
+                    Last_name: "khan",
+                    User_id: 1,
+                    Path: "1/c2odqadnsy1b36caoz2y",
+                    Price: 0,
+                    Title: "t1",
+                    Description: "t2",
+                    Hearts: 0,
+                    Width: 2672,
+                    Height: 1801,
+                    Tags: [
+                        "t1",
+                        "t2"
+                    ]
+                },
+                {
+                    Id: 4,
+                    First_name: "khan",
+                    Last_name: "khan",
+                    User_id: 1,
+                    Path: "1/c2odqadnsy1b36caoz2y",
+                    Price: 0,
+                    Title: "t1",
+                    Description: "t2",
+                    Hearts: 0,
+                    Width: 2672,
+                    Height: 1801,
+                    Tags: [
+                        "t1",
+                        "t2"
+                    ]
+                },
+                {
+                    Id: 4,
+                    First_name: "khan",
+                    Last_name: "khan",
+                    User_id: 1,
+                    Path: "1/c2odqadnsy1b36caoz2y",
+                    Price: 0,
+                    Title: "t1",
+                    Description: "t2",
+                    Hearts: 0,
+                    Width: 2672,
+                    Height: 1801,
+                    Tags: [
+                        "t1",
+                        "t2"
+                    ]
+                },
+                {
+                    Id: 4,
+                    First_name: "khan",
+                    Last_name: "khan",
+                    User_id: 1,
+                    Path: "1/c2odqadnsy1b36caoz2y",
+                    Price: 0,
+                    Title: "t1",
+                    Description: "t2",
+                    Hearts: 0,
+                    Width: 2672,
+                    Height: 1801,
+                    Tags: [
+                        "t1",
+                        "t2"
+                    ]
+                },
+                {
+                    Id: 4,
+                    First_name: "khan",
+                    Last_name: "khan",
+                    User_id: 1,
+                    Path: "1/c2odqadnsy1b36caoz2y",
+                    Price: 0,
+                    Title: "t1",
+                    Description: "t2",
+                    Hearts: 0,
+                    Width: 2672,
+                    Height: 1801,
+                    Tags: [
+                        "t1",
+                        "t2"
+                    ]
+                },
+            ],
+            "next_cursor": ""
+        }, 
         error: null
     }
 

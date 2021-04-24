@@ -1,7 +1,11 @@
 import Link from 'next/link';
 import React, { Component } from 'react';
-import styles from '../styles/Form.module.scss';
 import { Base64 } from 'js-base64';
+import { Flex } from '@chakra-ui/layout';
+import theme from '../utils/theme';
+import { Input } from '@chakra-ui/input';
+import { Button } from '@chakra-ui/button';
+import { Heading, Text } from '@chakra-ui/layout';
 
 class SignupForm extends Component {
     constructor(props) {
@@ -15,7 +19,8 @@ class SignupForm extends Component {
             signupFailed: false,
             signUpErrorMessage: '',
             arePasswordsSame: true,
-            ispasswordValid: true
+            ispasswordValid: true,
+            isLoading: false
         };
         this.handleFirstName = this.handleFirstName.bind(this);
         this.handleLastName = this.handleLastName.bind(this);
@@ -23,6 +28,10 @@ class SignupForm extends Component {
         this.handlePassword = this.handlePassword.bind(this);
         this.handleConfirmPassword = this.handleConfirmPassword.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleisLoading = this.handleisLoading.bind(this);
+    }
+    handleisLoading(value) {
+        this.setState({isLoading: value});
     }
     
     //min 8 letter password, with at least a symbol, upper and lower case letters and a number
@@ -69,8 +78,42 @@ class SignupForm extends Component {
     }
 
     handleSubmit(event) {
+        this.handleisLoading(true);
+        if(this.state.firstName === '') {
+            this.setState({
+                signupFailed: true,
+                signUpErrorMessage: "First Name is missing",
+                isLoading: false
+            });
+            return
+        }
+        if(this.state.lastName === '') {
+            this.setState({
+                signupFailed: true,
+                signUpErrorMessage: "Last name is missing",
+                isLoading: false
+            });
+            return
+        }
+        if(this.state.email === '') {
+            this.setState({
+                signupFailed: true,
+                signUpErrorMessage: "email is missing",
+                isLoading: false
+            });
+            return
+        }
+        if(this.state.password === '') {
+            this.setState({
+                signupFailed: true,
+                signUpErrorMessage: "Password is missing",
+                isLoading: false
+            });
+            return
+        }
+
         if(this.state.password !== this.state.confirmPassword) {
-            this.setState({arePasswordsSame: false});
+            this.setState({arePasswordsSame: false, isLoading: false});
             event.preventDefault();
             return
         }
@@ -89,6 +132,7 @@ class SignupForm extends Component {
         fetch('http://localhost:8080/api/v1/users', requestOptions)
             .then(async response => {
                 if(response.status != 200) {
+                    this.handleisLoading(false);
                     const data = await response.json();
                     return Promise.reject(data.message);
                 }
@@ -100,7 +144,8 @@ class SignupForm extends Component {
             .catch(error => {
                 this.setState({
                     signupFailed: true,
-                    signUpErrorMessage: error
+                    signUpErrorMessage: error,
+                    isLoading: false
                 });
             });
     }
@@ -109,62 +154,84 @@ class SignupForm extends Component {
     render() { 
         let errorLable;
         if(this.state.signupFailed)
-            errorLable = <label className={styles['form-control'] + ' ' + styles['form-text']+ ' ' + styles['text-danger']+ ' ' + styles['x-small'] + ' ' + styles['text-center']}>{this.state.signUpErrorMessage}</label>;
+            errorLable = this.state.signUpErrorMessage;
         else
-            errorLable=<></>;
+            errorLable='';
         let passwordError;
         if(!this.state.arePasswordsSame)
-            passwordError = <label className={styles['form-control'] + ' ' + styles['form-text']+ ' ' + styles['text-danger']+ ' ' + styles['x-small'] + ' ' + styles['text-center']}>Passwords do not match</label>;
+            passwordError = "Passwords do not match";
         else
-            passwordError=<></>;
+            passwordError='';
 
         let validatepasswordError;
         if(!this.state.ispasswordValid)
-            validatepasswordError = <label className={styles['form-control'] + ' ' + styles['form-text']+ ' ' + styles['text-danger']+ ' ' + styles['x-small'] + ' ' + styles['text-center']}>min 8 letter password, with at least a symbol, upper and lower case letters and a number</label>;
+            validatepasswordError = "min 8 letter password, with at least a symbol, upper and lower case letters and a number";
         else
-            validatepasswordError=<></>;
+            validatepasswordError='';
 
         return ( 
-            <div className={styles.container}>
-                <div className={styles.signin}>
-                    <h1 className={styles.lead + ' ' + styles['text-primary'] + ' ' + styles['text-center']}>Sign Up</h1>
-                    <div className={styles['form-control'] + ' ' + styles['text-center']}>
-                            <span className={styles["x-small"] + ' ' + styles["text-light"]}> Already have account? </span>
-                            <Link href="/login">
-                                <span className={styles["x-small"] + ' ' + styles["text-primary"]}>Sign In</span>
-                            </Link>
-                        </div>
-                    <form onSubmit={this.handleSubmit}>
-                        {errorLable}
-                        <input required className={styles['form-control'] + ' ' + styles['form-text']} type="text" value={this.state.firstName} 
+            <Flex my={10}
+                alignItems="center"
+                justifyContent="center">
+                <Flex direction="column"
+                    bg={theme.primary800}
+                    p={12}
+                    rounded={6}
+                    boxShadow="dark-lg"
+                    color="white"
+                    >
+                    <Heading as="h1" textAlign="center" mb={6}>Sign Up</Heading>
+                    <Flex mb={4} direction="row" justifyContent="center" alignItems="center">
+                        <Text fontSize="xs">Already on Gagster? </Text>
+                        <Link href="/signin">
+                            <a><Text as="u" fontSize="xs" ml={2}>Sign In</Text></a>
+                        </Link>                    
+                    </Flex>
+                    <Flex direction="row" justifyContent="center" color="red" my={4} flexWrap="wrap" display={!this.state.signupFailed ? "none" : "flex"}>
+                        <Text fontSize="xs" >{errorLable}</Text>
+                    </Flex>
+                    <Input isRequired variant="filled" mb={3} bg={theme.primary600}  type="text" value={this.state.firstName} 
                             onChange={this.handleFirstName} placeholder="Enter your first name"/>
-                        <input required className={styles['form-control'] + ' ' + styles['form-text']} type="text" value={this.state.lastName} 
+                    <Input isRequired isRequired variant="filled" mb={3} bg={theme.primary600}  type="text" value={this.state.lastName} 
                             onChange={this.handleLastName} placeholder="Enter your last name"/>
-                        <input required className={styles['form-control'] + ' ' + styles['form-text']} type="email" value={this.state.email} 
+                    <Input isRequired variant="filled" mb={3} bg={theme.primary600}  type="email" value={this.state.email} 
                             onChange={this.handleEmail} placeholder="Enter your email"/>
-                        <input required className={styles['form-control'] + ' ' + styles['form-text']} type="password" value={this.state.password} 
+                    <Input isRequired variant="filled" mb={3}  bg={theme.primary600} type="password" value={this.state.password} 
                             onChange={this.handlePassword} placeholder="Enter your password"/>
-                        {validatepasswordError}
-                        <input required className={styles['form-control'] + ' ' + styles['form-text']} type="password" value={this.state.confirmPassword} 
+                    <Flex direction="row" justifyContent="center" color="red" my={4} flexWrap="wrap" display={this.state.ispasswordValid ? "none" : "flex"}>
+                        <Text fontSize="xs" >{validatepasswordError}</Text>
+                    </Flex>
+                    <Input isRequired variant="filled" mb={3}  bg={theme.primary600} type="password" value={this.state.confirmPassword} 
                             onChange={this.handleConfirmPassword} placeholder="Confirm the password"/>
-                        {passwordError}
-                        <input className={styles['form-control'] + ' ' + styles['btn'] + ' ' + styles['btn-primary']} type="submit" value="Submit"/>
-                        <div className={styles['form-control'] + ' ' + styles['text-center']}>
-                            <span className={styles["xx-small"] + ' ' + styles["text-light"]}> By signing up, you agree to gagster's
-                            <Link href="/terms">
-                                <span className={styles["text-primary"]}> Terms & Conditions</span>
-                            </Link>, 
-                            <Link href="/refund">
-                                <span className={styles["text-primary"]}> Cancellation & Refund Policy</span>
-                            </Link>, 
-                            <Link href="/privacy">
-                                <span className={styles["text-primary"]}> Privacy Policy</span>
-                            </Link>
-                            </span>
-                        </div>
-                    </form>
-                </div>
-            </div> 
+                    <Flex direction="row" justifyContent="center" color="red" my={4} flexWrap="wrap" display={this.state.arePasswordsSame ? "none" : "flex"}>
+                        <Text fontSize="xs" >{passwordError}</Text>
+                    </Flex>
+                    <Button
+                        isLoading = {this.state.isLoading}
+                        loadingText="please wait..." 
+                        size="sm"
+                        rounded="full"
+                        color={theme.button.primary.color}
+                        bg={theme.button.primary.bg}
+                        _hover={{ bg: theme.button.primary._hover.bg}}
+                        onClick={this.handleSubmit}
+                    >
+                        Sign Up
+                    </Button>
+                    <Flex mt={6} direction="column" justifyContent="center" alignItems="center">
+                        <Text fontSize="xs">By signing up, you agree to gagster's</Text>
+                        <Link href="#forgotpassword">
+                            <a><Text as="u" fontSize="xs" ml={2}>Terms & Conditions</Text></a>
+                        </Link> 
+                        <Link href="#forgotpassword">
+                            <a><Text as="u" fontSize="xs" ml={2}>Privacy Policy</Text></a>
+                        </Link> 
+                        <Link href="#forgotpassword">
+                            <a><Text as="u" fontSize="xs" ml={2}>Return and Refund Policy</Text></a>
+                        </Link>                    
+                    </Flex>
+                </Flex>
+            </Flex> 
         );
     }
 }

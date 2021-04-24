@@ -9,7 +9,7 @@ import { fromBase64 } from 'js-base64';
 
 export default function Home() {
   const [viewgag, setGag] = useState(false)
-  var {feed, isLoading, isError} = useSearch(viewgag ? viewgag.tags : null)
+  var {feed, isLoading, isError} = useSearch(viewgag ? viewgag.Tags : null)
     useEffect(() => {
         async function settingGag(g) {
           await new Promise(r => setTimeout(r, 2000));
@@ -36,7 +36,7 @@ export default function Home() {
           (
             <Spinner></Spinner>
           ) :
-          (<Gags gags={feed.data.gags}></Gags>)
+          (<Gags gags={feed.data.Gags}></Gags>)
         }
       </>
     </>
